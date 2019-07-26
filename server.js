@@ -31,9 +31,9 @@ mongoose.connect("mongodb://localhost/webScraper", { useNewUrlParser: true });
 
 
 // API Routes.
-app.get("/", function(req, res){
-    res.render("index");
-});
+// app.get("/", function(req, res){
+//     res.render("index");
+// });
 
 app.get("/scrape" , function(req, res) {
     axios.get("https://news.developer.nvidia.com/").then(function(response){
@@ -46,7 +46,7 @@ app.get("/scrape" , function(req, res) {
         result.link = $(this)
             .children("a")
             .attr("href");
-        // console.log(result);
+        // res.send(result);
 
         db.Article.create(result).then(function(dbArticle) {
             console.log(dbArticle);
@@ -54,20 +54,22 @@ app.get("/scrape" , function(req, res) {
         .catch(function(err) {
             console.log(err);
         });
+
     });
-    res.send("Got' em");
     });
 });
 
-app.get("/articles", function(req, res) {
+
+app.get("/", function(req, res) {
     db.Article.find({})
-      .then(function(dbArticle) {
+    .then(function(dbArticle) {
         res.json(dbArticle);
-      })
-      .catch(function(err) {
+    })
+    .catch(function(err) {
         res.json(err);
-      });
-  });
+    });
+});
+
 
 app.get("/articles/:id", function(req, res) {
     db.Article.findOne({ _id: req.params.id })
@@ -95,7 +97,7 @@ app.get("/articles/:id", function(req, res) {
 
 
 
-
+res.render("index");
 // Starts server.
 app.listen(PORT, function() {
     console.log( `

@@ -58,7 +58,7 @@ app.get("/scrape" , function(req, res) {
     });
     });
 });
-
+// THIS IS A TESTT
 
 app.get("/", function(req, res) {
     db.Article.find({})
